@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GymPlanner.Data;
 using GymPlanner.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GymPlanner.Controllers
 {
+    [Authorize]
     public class WorkoutsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +20,7 @@ namespace GymPlanner.Controllers
         {
             _context = context;
         }
-
+        [AllowAnonymous]
         // GET: Workouts
         public async Task<IActionResult> Index()
         {

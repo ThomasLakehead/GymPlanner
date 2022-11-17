@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GymPlanner.Data;
 using GymPlanner.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GymPlanner.Controllers
 {
+    [Authorize]
     public class DaysController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,13 +20,13 @@ namespace GymPlanner.Controllers
         {
             _context = context;
         }
-
+        [AllowAnonymous]
         // GET: Days
         public async Task<IActionResult> Index()
         {
               return View(await _context.Day.ToListAsync());
         }
-
+        
         // GET: Days/Details/5
         public async Task<IActionResult> Details(int? id)
         {
