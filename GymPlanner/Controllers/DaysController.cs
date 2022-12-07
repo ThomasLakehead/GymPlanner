@@ -20,6 +20,7 @@ namespace GymPlanner.Controllers
         {
             _context = context;
         }
+
         [AllowAnonymous]
         // GET: Days
         public async Task<IActionResult> Index()
