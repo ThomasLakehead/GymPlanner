@@ -25,7 +25,7 @@ namespace GymPlanner.Controllers
         // GET: Days
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Day.ToListAsync());
+              return View("404", await _context.Day.ToListAsync());
         }
         
         // GET: Days/Details/5
@@ -33,17 +33,18 @@ namespace GymPlanner.Controllers
         {
             if (id == null || _context.Day == null)
             {
-                return NotFound();
+                // return NotFound();
+                return View("404");
             }
 
             var day = await _context.Day
                 .FirstOrDefaultAsync(m => m.DayId == id);
             if (day == null)
             {
-                return NotFound();
+                return View("404");
             }
 
-            return View(day);
+            return View("Details", day);
         }
 
         // GET: Days/Create
@@ -73,15 +74,15 @@ namespace GymPlanner.Controllers
         {
             if (id == null || _context.Day == null)
             {
-                return NotFound();
+                return NotFound("404");
             }
 
             var day = await _context.Day.FindAsync(id);
             if (day == null)
             {
-                return NotFound();
+                return NotFound("404");
             }
-            return View(day);
+            return View("Edit", day);
         }
 
         // POST: Days/Edit/5
@@ -93,7 +94,7 @@ namespace GymPlanner.Controllers
         {
             if (id != day.DayId)
             {
-                return NotFound();
+                return NotFound("404");
             }
 
             if (ModelState.IsValid)
@@ -107,7 +108,7 @@ namespace GymPlanner.Controllers
                 {
                     if (!DayExists(day.DayId))
                     {
-                        return NotFound();
+                        return NotFound("404");
                     }
                     else
                     {
@@ -116,25 +117,25 @@ namespace GymPlanner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(day);
+            return View("Edit", day);
         }
 
         // GET: Days/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+       public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Day == null)
             {
-                return NotFound();
+                return NotFound("404");
             }
 
             var day = await _context.Day
                 .FirstOrDefaultAsync(m => m.DayId == id);
             if (day == null)
             {
-                return NotFound();
+                return NotFound("404");
             }
 
-            return View(day);
+            return View("Delete", day);
         }
 
         // POST: Days/Delete/5
@@ -144,7 +145,7 @@ namespace GymPlanner.Controllers
         {
             if (_context.Day == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Day'  is null.");
+                return Problem("404", "Entity set 'ApplicationDbContext.Day'  is null.");
             }
             var day = await _context.Day.FindAsync(id);
             if (day != null)
@@ -153,12 +154,14 @@ namespace GymPlanner.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("DeleteConfirmed", nameof(Index));
         }
 
         private bool DayExists(int id)
         {
           return _context.Day.Any(e => e.DayId == id);
         }
+
+      
     }
 }
